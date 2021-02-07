@@ -19,6 +19,10 @@ Rule2   ON power1#state=1 DO Backlog publish cmnd/%topic%/POWER 1; RuleTimer1 12
 #### Turn on this ShellyTas and another ShellyTas when switch1#state = '2' toggle
 Rule2 ON switch1#state=2 DO Backlog publish cmnd/tasmota_C4F6A4/POWER 1; publish cmnd/tasmota_C4FB84/POWER 1; RuleTimer2 20 ENDON   ON Rules#Timer=2 DO Backlog publish cmnd/tasmota_C4F6A4/POWER 0; publish cmnd/tasmota_C4FB84/POWER 0 ENDON
 
+#### If we are turned on by RF PIRs then set turn off timer
+Rule3 ON power#state=1 DO Backlog publish cmnd/%topic%/POWER 1; RuleTimer3 20 ENDON ON Rules#Timer=3 DO publish cmnd/%topic%/POWER 0 ENDON
+
+
 #### Mqtt topics used
 - Last Will & Testament  
 tele/tasmota_C4F6A4/LWT   
