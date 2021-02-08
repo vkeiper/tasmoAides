@@ -22,6 +22,12 @@ Rule2 ON switch1#state=2 DO Backlog publish cmnd/tasmota_C4F6A4/POWER 1; publish
 #### If we are turned on by RF PIRs then set turn off timer
 Rule3 ON power#state=1 DO Backlog publish cmnd/%topic%/POWER 1; RuleTimer3 20 ENDON ON Rules#Timer=3 DO publish cmnd/%topic%/POWER 0 ENDON
 
+# set relay on this tasmo ON, publish POWER1 1 to CAEACC, then 10 secs later turn off this relay, pushish POWER1 0 to C4EACC
+Rule1   ON switch2#state DO Backlog Power1 on; publish cmnd/shtas_C4EACC/POWER1 1; RuleTimer1 10 ENDON   ON Rules#Timer=1 DO Backlog Power1 off; publish cmnd/shtas_C4EACC/POWER1 0 ENDON 
+
+# when power1 relay turn on publish binary sensor into to mqtt YES, then 5 seconds later publish NO
+Rule2   ON power1#state=1 DO Backlog publish stat/%topic%/PIR1/state YES; RuleTimer2 5 ENDON ON Rules#Timer=2 DO publish stat/%topic%/PIR1/state NO ENDON
+
 
 #### Mqtt topics used
 - Last Will & Testament  
