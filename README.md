@@ -37,4 +37,9 @@ setoption19 1
  #### 2 Stop Burning Power Up counts to flash
  backlog setoption0 0; setoption36 1
  
+ ### Flash Reset
+ Reset 4 resets all cfg but leaves Wifi parameters
+ 
+ 
+ 
  
