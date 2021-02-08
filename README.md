@@ -28,6 +28,28 @@ Rule1   ON switch2#state DO Backlog Power1 on; publish cmnd/shtas_C4EACC/POWER1 
 # when power1 relay turn on publish binary sensor into to mqtt YES, then 5 seconds later publish NO
 Rule2   ON power1#state=1 DO Backlog publish stat/%topic%/PIR1/state YES; RuleTimer2 5 ENDON ON Rules#Timer=2 DO publish stat/%topic%/PIR1/state NO ENDON
 
+# START Group - Stair Light Switches and Motion sensors 
+
+# START Foyer Motion & Switch - MAC C4FB8A (IP 117)
+# This one switches itself and then th Upstairs Hall switch
+# set relay on this tasmo ON, publish POWER1 1 to CAEACC, then 10 secs later turn off this relay, pushish POWER1 0 to C4EACC
+Rule1   ON switch2#state DO Backlog Power1 on; publish cmnd/shtas_C4EACC/POWER1 1;publish stat/%topic%/PIR1/state YES; RuleTimer1 10 ENDON   ON Rules#Timer=1 DO Backlog Power1 off; publish cmnd/shtas_C4EACC/POWER1 0 ENDON 
+
+# when power1 relay turn on publish binary sensor into to mqtt YES, then 5 seconds later publish NO
+Rule2   ON power1#state=1 DO RuleTimer2 5 ENDON ON Rules#Timer=2 DO publish stat/%topic%/PIR1/state NO ENDON
+# END Foyer Motion & Switch
+
+# START Upstairs Hall Motion & Switch - MAC C4EACC (IP 189)
+# This one switches itself and then th Upstairs Hall switch
+# set relay on this tasmo ON, publish POWER1 1 to CAFB8A, then 10 secs later turn off this relay, pushish POWER1 0 to C4FB8A
+Rule1   ON switch2#state DO Backlog Power1 on; publish cmnd/shtas_C4FB8A/POWER1 1;publish stat/%topic%/PIR1/state YES; RuleTimer1 10 ENDON   ON Rules#Timer=1 DO Backlog Power1 off; publish cmnd/shtas_C4FB8A/POWER1 0 ENDON 
+
+# when power1 relay turn on publish binary sensor into to mqtt YES, then 5 seconds later publish NO
+Rule2   ON power1#state=1 DO RuleTimer2 5 ENDON ON Rules#Timer=2 DO publish stat/%topic%/PIR1/state NO ENDON
+# END Upstairs Hall Motion & Switch
+
+# END Group - Stair Light Switches and Motion sensors 
+
 
 #### Mqtt topics used
 - Last Will & Testament  
