@@ -30,25 +30,34 @@ Rule1   ON switch2#state DO Backlog Power1 on; RuleTimer1 10 ENDON   ON Rules#Ti
 # set relay on this tasmo ON, publish POWER1 1 to CAEACC, then 10 secs later turn off this relay, pushish POWER1 0 to C4EACC
 Rule1   ON switch2#state DO Backlog Power1 on; publish cmnd/shtas_C4EACC/POWER1 1;publish stat/%topic%/PIR1/state YES; RuleTimer1 10 ENDON   ON Rules#Timer=1 DO Backlog Power1 off; publish cmnd/shtas_C4EACC/POWER1 0 ENDON 
 
-# when power1 relay turn on publish binary sensor into to mqtt YES, then 5 seconds later publish NO
+# when power1 relay turn set 5 second timer, then when triggers publish NO
 Rule2   ON power1#state=1 DO RuleTimer2 5 ENDON ON Rules#Timer=2 DO publish stat/%topic%/PIR1/state NO ENDON
 # END Foyer Motion & Switch
+
+# HW Switch monitor, switches its relay1 on and then the Upstairs Hall switch relay 1 over mqtt
+# set relay on this tasmo ON, publish POWER1 1 to CAEACC, then publish SW1 pressed, then 10 secs later turn off this relay, pushish POWER1 0 to C4EACC
+Rule3   ON switch1#state=2 DO Backlog Power1 on; publish cmnd/shtas_C4EACC/POWER1 1;publish stat/%topic%/SW1/state PRESSED; RuleTimer3 10 ENDON   ON Rules#Timer=3 DO Backlog Power1 off; publish cmnd/shtas_C4EACC/POWER1 0 ENDON 
 
 # START Upstairs Hall Motion & Switch - MAC C4EACC (IP 189)
 # This one switches itself and then th Upstairs Hall switch
 # set relay on this tasmo ON, publish POWER1 1 to CAFB8A, then 10 secs later turn off this relay, pushish POWER1 0 to C4FB84
 Rule1   ON switch2#state DO Backlog Power1 on; publish cmnd/shtas_C4FB84/POWER1 1;publish stat/%topic%/PIR1/state YES; RuleTimer1 10 ENDON   ON Rules#Timer=1 DO Backlog Power1 off; publish cmnd/shtas_C4FB84/POWER1 0 ENDON 
 
-# when power1 relay turn on publish binary sensor into to mqtt YES, then 5 seconds later publish NO
+# when power1 relay turn set 5 second timer, then when triggers publish NO
 Rule2   ON power1#state=1 DO RuleTimer2 5 ENDON ON Rules#Timer=2 DO publish stat/%topic%/PIR1/state NO ENDON
 # END Upstairs Hall Motion & Switch
+
+# HW Switch monitor, switches its relay1 on and then the Upstairs Hall switch relay 1 over mqtt
+# set relay on this tasmo ON, publish POWER1 1 to CAFB8A, then publish SW1 pressed, then 10 secs later turn off this relay, pushish POWER1 0 to C4FB84
+Rule3   ON switch1#state=2 DO Backlog Power1 on; publish cmnd/shtas_C4FB84/POWER1 1;publish stat/%topic%/SW1/state PRESSED; RuleTimer3 10 ENDON   ON Rules#Timer=3 DO Backlog Power1 off; publish cmnd/shtas_C4FB84/POWER1 0 ENDON 
+
 
 # END Group - Stair Light Switches and Motion sensors 
 
 
-cmnd/tasmota_C4F6A4
-cmnd/shtas_C4FB84
-cmnd/shtas_C4EACC
+cmnd/tasmota_C4F6A4   192.168.1.151
+cmnd/shtas_C4FB84     192.168.1.117
+cmnd/shtas_C4EACC     192.168.1.189
 
 
  stat/tasmota_C4F6A4
